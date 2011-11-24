@@ -9,28 +9,22 @@
 <body>
   <div id="questions">
   </div>
-  <button id="load-more" data-curr-page="1" >loading more...</button>
+  <div id="answers">
+  </div>
 <script id="template" type="text/x-handlebars-template">
   {{#questions}}
     <h2>{{title}}</h2>
     <div class="content">{{content}}</div>
   {{/questions}}
 </script>
+<script id="answer-template" type="text/x-handlebars-template">
+  {{#questions}}
+    <h2>{{title}}</h2>
+  {{/questions}}
+</script>
 <script type="text/javascript" charset="utf-8">
-  var template = Handlebars.compile($("#template").html());
-  var get_questions = function(url) {
-    $.get(url, function(data, textStatus, xhr) {
-      $("#questions").append(template(data));
-    });
-  };
-  
-  get_questions("/questions.json");
-  
-  $("#load-more").live("click", function(){
-    data.currPage = $(this).data("")
-    alert()
-  });
-  
+  $("#questions").tableViewController({dataSource: "/questions.json", template: "#template"});
+  $("#answers").tableViewController({dataSource: "/questions.json", template: "#answer-template"});
 </script>
 </body>
 </html>
