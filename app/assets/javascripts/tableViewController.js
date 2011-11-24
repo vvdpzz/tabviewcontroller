@@ -3,28 +3,15 @@
  * ============================================================ */
 
 !function( $ ){
-  fetch = function(template, el, page, url, sortby, order) {
-    $.get(url, {page: page, sortby: sortby, order: order}, function(data, textStatus, xhr) {
-      if (page == 1){
-        $(el).append(template(data));
-        // generate load-more button
-        var loadMore = $("<button/>").attr({class: "load-more", "data-page": 1 }).text("Load More...");
-        $(el).append(loadMore);
-
-        // bind load-more click event
-        $(el).find(".load-more").live("click", function(){
-          data = $(this).data();
-          fetch(template, el, ++data.page, url, sortby, order);
-        });
-      } else {
-        for(i in data){
-          if (data[i].length > 0){
-            $(el).find(".load-more").before(template(data));
-          } else {
-            $(el).find(".load-more").remove();
-          }
-          break;
-        } 
+  fetch = function(el, template, dataSource, params) {
+    $.get(dataSource, params, function(data, textStatus, xhr) {
+      for(i in data){
+        if (data[i].length > 0){
+          $(el).find(".load-more").before(template(data));
+        } else {
+          $(el).find(".load-more").remove();
+        }
+        break;
       }
     });
   };
@@ -32,11 +19,28 @@
     options.sortby || (options.sortby = "created_at");
     options.order || (options.order = "asc");
     
+    var params = {page: 1, sortby: options.sortby, order: options.order}
+    
     // compile the particular handlebar template
     var template = Handlebars.compile($(options.template).html());
     
+    // generate load-more button
+    var loadMore = $("<button/>").attr({class: "load-more", "data-page": 1 }).text("Load More...");
+    this.append(loadMore);
+    
+    var that = this;
+
+    // bind load-more click event
+    this.find(".load-more").live("click", function(){
+      data = $(this).data();
+      params.page = ++data.page
+      fetch(that, template, options.dataSource, params);
+    });
+    
     // fetch the initialize data
-    fetch(template, this, 1, options.dataSource, options.sortby, options.order);
+    fetch(this, template, options.dataSource, params);
+    
+    // need pass a callback function to fetch to set the load-more button show
     
     return this;
   }
