@@ -26,15 +26,14 @@
     var template = Handlebars.compile($(options.template).html());
     
     // generate load-more button
-    var loadMore = $("<button/>").attr({class: "load-more", "data-page": 1 }).text("Load More...").hide();
+    var loadMore = $("<button/>").addClass("load-more").text("Load More...").data("page", 1).hide();
     this.append(loadMore);
     
     var that = this;
 
     // bind load-more click event
     this.find(".load-more").live("click", function(){
-      data = $(this).data();
-      params.page = ++data.page
+      params.page = ++$(this).data().page
       fetch(that, template, options.dataSource, params, null);
     });
     
