@@ -68,6 +68,6 @@ class QuestionsController < ApplicationController
   protected
   
     def questions
-      @questions ||= Question.all
+      @questions ||= Question.page(params[:page]).per(2)
     end
 end
