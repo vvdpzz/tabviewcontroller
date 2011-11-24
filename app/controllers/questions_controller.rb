@@ -68,6 +68,6 @@ class QuestionsController < ApplicationController
   protected
   
     def questions
-      @questions ||= Question.page(params[:page]).per(2)
+      @questions ||= Question.page(params[:page]).order("#{params[:sortby]} #{params[:order]}").per(2)
     end
 end

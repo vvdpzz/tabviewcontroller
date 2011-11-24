@@ -11,20 +11,22 @@
   </div>
   <div id="answers">
   </div>
-<script id="template" type="text/x-handlebars-template">
+  <script id="template" type="text/x-handlebars-template">
   {{#questions}}
-    <h2>{{title}}</h2>
-    <div class="content">{{content}}</div>
+  <h2>{{title}}</h2>
+  <div class="content">{{content}}</div>
+  <h1>Answers_count: {{answers_count}}</h1>
+  <h1>Votes_count: {{votes_count}}</h1>
   {{/questions}}
-</script>
-<script id="answer-template" type="text/x-handlebars-template">
+  </script>
+  <script id="answer-template" type="text/x-handlebars-template">
   {{#questions}}
-    <h2>{{title}}</h2>
+  <h2>{{title}}</h2>
   {{/questions}}
-</script>
-<script type="text/javascript" charset="utf-8">
-  $("#questions").tableViewController({dataSource: "/questions.json", template: "#template"});
+  </script>
+  <script type="text/javascript" charset="utf-8">
+  $("#questions").tableViewController({template: "#template", dataSource: "/questions.json", sortby: "votes_count", order: "desc"});
   $("#answers").tableViewController({dataSource: "/questions.json", template: "#answer-template"});
-</script>
+  </script>
 </body>
 </html>

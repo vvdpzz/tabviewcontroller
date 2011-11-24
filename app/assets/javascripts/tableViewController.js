@@ -3,8 +3,8 @@
  * ============================================================ */
 
 !function( $ ){
-  fetch = function(template, el, page, url) {
-    $.get(url, {page: page}, function(data, textStatus, xhr) {
+  fetch = function(template, el, page, url, sortby, order) {
+    $.get(url, {page: page, sortby: sortby, order: order}, function(data, textStatus, xhr) {
       if (page == 1){
         $(el).append(template(data));
         // generate load-more button
@@ -14,7 +14,7 @@
         // bind load-more click event
         $(el).find(".load-more").live("click", function(){
           data = $(this).data();
-          fetch(template, el, ++data.page, url);
+          fetch(template, el, ++data.page, url, sortby, order);
         });
       } else {
         for(i in data){
@@ -29,11 +29,14 @@
     });
   };
   $.fn.tableViewController = function(options) {
+    options.sortby || (options.sortby = "created_at");
+    options.order || (options.order = "asc");
+    
     // compile the particular handlebar template
     var template = Handlebars.compile($(options.template).html());
     
     // fetch the initialize data
-    fetch(template, this, 1, options.dataSource);
+    fetch(template, this, 1, options.dataSource, options.sortby, options.order);
     
     return this;
   }
