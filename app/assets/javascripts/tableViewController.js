@@ -3,7 +3,7 @@
  * ============================================================ */
 
 !function( $ ){
-  fetch = function(el, template, dataSource, params) {
+  fetch = function(el, template, dataSource, params, callback) {
     $.get(dataSource, params, function(data, textStatus, xhr) {
       for(i in data){
         if (data[i].length > 0){
@@ -13,6 +13,7 @@
         }
         break;
       }
+      if (callback) callback(el);
     });
   };
   $.fn.tableViewController = function(options) {
@@ -25,7 +26,7 @@
     var template = Handlebars.compile($(options.template).html());
     
     // generate load-more button
-    var loadMore = $("<button/>").attr({class: "load-more", "data-page": 1 }).text("Load More...");
+    var loadMore = $("<button/>").attr({class: "load-more", "data-page": 1 }).text("Load More...").hide();
     this.append(loadMore);
     
     var that = this;
@@ -34,13 +35,15 @@
     this.find(".load-more").live("click", function(){
       data = $(this).data();
       params.page = ++data.page
-      fetch(that, template, options.dataSource, params);
+      fetch(that, template, options.dataSource, params, null);
     });
     
-    // fetch the initialize data
-    fetch(this, template, options.dataSource, params);
+    var callback = function(el){
+      $(el).find(".load-more").show();
+    }
     
-    // need pass a callback function to fetch to set the load-more button show
+    // fetch the initialize data
+    fetch(this, template, options.dataSource, params, callback);
     
     return this;
   }
