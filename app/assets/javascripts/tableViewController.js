@@ -9,12 +9,12 @@
       for(i in data){
         if (data[i].length > 0){
           loadMore.before(template(data));
+          if (params.page == 1) loadMore.show();
         } else {
           loadMore.remove();
         }
         break;
       }
-      if (params.page == 1) loadMore.show();
     });
   };
   $.fn.tableViewController = function(options) {
