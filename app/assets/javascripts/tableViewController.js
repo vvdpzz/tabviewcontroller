@@ -3,17 +3,18 @@
  * ============================================================ */
 
 !function( $ ){
-  fetch = function(el, template, dataSource, params, callback) {
+  fetch = function(el, template, dataSource, params) {
     $.get(dataSource, params, function(data, textStatus, xhr) {
+      var loadMore = $(el).find(".load-more");
       for(i in data){
         if (data[i].length > 0){
-          $(el).find(".load-more").before(template(data));
+          loadMore.before(template(data));
         } else {
-          $(el).find(".load-more").remove();
+          loadMore.remove();
         }
         break;
       }
-      if (callback) callback(el);
+      if (params.page == 1) loadMore.show();
     });
   };
   $.fn.tableViewController = function(options) {
@@ -34,15 +35,11 @@
     // bind load-more click event
     this.find(".load-more").live("click", function(){
       params.page = ++$(this).data().page
-      fetch(that, template, options.dataSource, params, null);
+      fetch(that, template, options.dataSource, params);
     });
     
-    var callback = function(el){
-      $(el).find(".load-more").show();
-    }
-    
     // fetch the initialize data
-    fetch(this, template, options.dataSource, params, callback);
+    fetch(this, template, options.dataSource, params);
     
     return this;
   }

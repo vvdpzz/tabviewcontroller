@@ -24,7 +24,7 @@
   {{/questions}}
   </script>
   <script type="text/javascript" charset="utf-8">
-  $("#questions").tableViewController({template: "#template", dataSource: "/questions.json", sortby: "votes_count", order: "desc"});
+  $("#questions").tableViewController({template: "#template", dataSource: "/questions.json", sortby: "answers_count", order: "desc"});
   $("#answers").tableViewController({template: "#answer-template", dataSource: "/questions.json"});
   </script>
 </body>
