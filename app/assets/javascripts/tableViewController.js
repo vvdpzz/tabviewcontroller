@@ -4,13 +4,18 @@
 
 !function( $ ){
   fetch = function(el, template, dataSource, params) {
+    var loadMore = $(el).find(".load-more");
+    var blueText = loadMore.find(".blue-text");
+    var spinner = loadMore.find(".spinner");
+    blueText.hide();
+    spinner.show();
     $.get(dataSource, params, function(data, textStatus, xhr) {
-      var loadMore = $(el).find(".load-more");
       for(var i in data){
         if (data.hasOwnProperty(i)){
           if (data[i].length > 0){
             loadMore.before(template(data));
-            if (params.page == 1) loadMore.show();
+            spinner.hide();
+            blueText.show();
           } else {
             loadMore.remove();
           }
@@ -29,7 +34,9 @@
     var template = Handlebars.compile($(options.template).html());
     
     // generate load-more button
-    var loadMore = $("<button/>").addClass("load-more").text("Load More...").data("page", 1).hide();
+    var loadMore = $('<div/>').addClass("load-more")
+    .append('<div class="blue-text">载入更多</div>')
+    .append('<div class="spinner">').data("page", 1);
     this.append(loadMore);
     
     var that = this;

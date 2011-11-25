@@ -1,3 +1,19 @@
-// Place all the styles related to the questions controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.load-more{
+  position: relative;
+  height: 39px;
+  text-align: center;
+  background: #EBF2FC;
+  border: 1px solid #CDDCF9;
+  cursor:pointer;
+  margin:10px 0;
+  .blue-text{
+    color: #3B5998;
+    padding:12px;
+  }
+  .spinner {
+    height: 11px;
+    width: 16px;
+    background: url(/assets/loading.gif) no-repeat center;
+    margin: 14px auto;
+  }
+}
