@@ -6,14 +6,16 @@
   fetch = function(el, template, dataSource, params) {
     $.get(dataSource, params, function(data, textStatus, xhr) {
       var loadMore = $(el).find(".load-more");
-      for(i in data){
-        if (data[i].length > 0){
-          loadMore.before(template(data));
-          if (params.page == 1) loadMore.show();
-        } else {
-          loadMore.remove();
+      for(var i in data){
+        if (data.hasOwnProperty(i)){
+          if (data[i].length > 0){
+            loadMore.before(template(data));
+            if (params.page == 1) loadMore.show();
+          } else {
+            loadMore.remove();
+          }
+          break;
         }
-        break;
       }
     });
   };
